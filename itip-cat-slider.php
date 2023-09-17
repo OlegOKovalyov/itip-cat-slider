@@ -4,7 +4,7 @@
  * Plugin Name:       ITIP Product Category Slider
  * Plugin URI:        https://itipteam.com/
  * Description:       Add slider effect to category product image
- * Version:           1.0.1
+ * Version:           1.0.2
  * Requires at least: 5.0
  * Requires PHP:      7.0
  * Author:            Oleg Kovalyov
@@ -22,7 +22,7 @@ function itip_cat_slider_scripts() {
 add_action( 'wp_enqueue_scripts', 'itip_cat_slider_scripts' );
 
 // Customize WooCommerce shop page product thumbnails
-// Make slider on product thumbnail with additional image from ACF field 'slider_image'
+// Make slider effect on product thumbnail with additional image from ACF field 'slider_image'
 function replacing_template_loop_product_thumbnail() {
 
 	function itip_wc_template_loop_product_replaced_thumb() {
