@@ -4,7 +4,7 @@
  * Plugin Name:       ITIP Product Category Slider
  * Plugin URI:        https://itipteam.com/
  * Description:       Add slider effect to category product image
- * Version:           1.0.3
+ * Version:           1.1
  * Requires at least: 5.0
  * Requires PHP:      7.0
  * Author:            Oleg Kovalyov
@@ -15,8 +15,11 @@
 
 // Enqueue the plugin CSS file
 function itip_cat_slider_scripts() {
-	if( is_product_category() ):
-		wp_enqueue_style( 'slider', plugin_dir_url( __FILE__ ) . 'assets/css/slider.css', array(), '1.0', 'all' );
+	$plugin_data = get_plugin_data(__FILE__);
+	$plugin_version = $plugin_data['Version'];
+	$is_slider_enabled = is_product_category() || is_home() || is_search();
+	if( is_product_category() || is_home() || is_search() ):
+		wp_enqueue_style( 'slider', plugin_dir_url( __FILE__ ) . 'assets/css/slider.css', array(), $plugin_version, 'all' );
 	endif;
 }
 add_action( 'wp_enqueue_scripts', 'itip_cat_slider_scripts' );
@@ -26,7 +29,7 @@ add_action( 'wp_enqueue_scripts', 'itip_cat_slider_scripts' );
 function itip_replacing_template_loop_product_thumbnail() {
 
 	function wc_template_loop_product_replaced_thumb() {
-
+		$is_slider_enabled = is_product_category() || is_home() || is_search();
 		$product_id = get_the_ID();
 
 		$thumbnail_url = get_the_post_thumbnail_url($product_id, 'thumbnail');
@@ -35,9 +38,9 @@ function itip_replacing_template_loop_product_thumbnail() {
 		$additional_image_url = get_field( 'slider_image', $product_id );
 		$additional_image = wp_get_attachment_image_src( $additional_image_url, 'medium' );
 
-		if ( $additional_image_url && is_product_category() ) { // On category page only
-			echo '<img width="" height="" src="' . $additional_image_url .
-				'" class="overlay-content" alt="" decoding="async" loading="lazy">';
+		if ( $additional_image_url && $is_slider_enabled ) { // On category page only
+			echo '<div class="overlay-content"><img width="" height="" src="' . $additional_image_url .
+				'" class="" alt="" decoding="async" loading="lazy"></div>';
 		} else {
 
 		}
